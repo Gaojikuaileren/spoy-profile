@@ -1,0 +1,33 @@
+# ===== webRIREKI =====
+# 公开仓库只放网站运行所需；大源文件 / 素材源 / 内部文档不入库。
+
+# --- 视频源（上线用压缩版 roomrecord-web.mp4）---
+assets/roomrecord.mp4
+assets/roomrecord02.mp4
+assets/roomrecord03.mp4
+
+# --- 素材源（已转换：gif→dolphin/*.jpg；录屏源 .mov）---
+assets/12,Dolphin.gif
+assets/P_test*.mov
+
+# --- 旧 about 背景（新站已无 about 板块）---
+assets/aboutmebg.png
+assets/480aboutmebg.png
+assets/768aboutmebg.png
+assets/1024aboutmebg.png
+
+# --- 嵌套的旧仓库克隆 ---
+/spoy-profile/
+
+# --- 内部文档 / 旧站备份（不公开）---
+index.legacy.html
+体检报告.md
+重构说明.md
+
+# --- 系统 / 本地 ---
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+.vscode/
+node_modules/

@@ -1,0 +1,150 @@
+/* ============================================================
+   base.css — 全局基础样式（板块自有样式写在各自模块里）
+   设计语言：黑底 + CMY 霓虹 + 差值混合，延续旧站调性
+   ============================================================ */
+
+:root {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #aaa;
+  --cyan: #00ffff;
+  --magenta: #ff00ff;
+  --yellow: #ffff00;
+  --btn-font-size: clamp(28px, 5vw, 56px);
+  --font-ui: "PingFang SC", "Source Han Sans CN", "Noto Sans CJK SC",
+             "Helvetica Neue", Arial, sans-serif;
+  --gap-section: 0px; /* 板块间距，默认贴合，可按需调 */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 尊重“减少动效”系统设置：引擎会据此降级 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+img, video, canvas, model-viewer { max-width: 100%; }
+
+/* ---------- 板块容器 ---------- */
+/* 引擎为每个板块生成 <section class="section" id="...">          */
+/* min-height 占位，避免懒加载时布局跳动                          */
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 60vh;
+  margin: var(--gap-section) 0;
+}
+
+/* ---------- 占位色块（资源缺失 / 板块未实现 / 加载中） ---------- */
+.ph {
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,255,255,.10) 0 40px,
+      rgba(255,0,255,.10) 40px 80px,
+      rgba(255,255,0,.10) 80px 120px
+    ),
+    #0a0a0a;
+}
+.ph__label {
+  font-size: clamp(14px, 2.5vw, 22px);
+  letter-spacing: .08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1em 1.5em;
+  border: 1px dashed rgba(255,255,255,.25);
+  border-radius: 8px;
+  background: rgba(0,0,0,.35);
+}
+.ph__label small { display:block; opacity:.6; margin-top:.4em; text-transform:none; letter-spacing:0; }
+
+/* 板块加载骨架（接近视口、模块还没到位时） */
+.section[data-state="loading"]::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, #0a0a0a 30%, #141414 50%, #0a0a0a 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ---------- 全局语言切换 ---------- */
+#lang-switcher {
+  position: fixed;
+  top: 18px; right: 18px;
+  z-index: 10001;
+  display: flex;
+  gap: 12px;
+  isolation: isolate;            /* 仅与页面背景做差值混合 */
+  mix-blend-mode: difference;
+  color: #fff;
+}
+#lang-switcher .lang-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: inherit;
+  padding: 2px 4px;
+  font-family: inherit;
+  opacity: .65;
+  transition: opacity .2s;
+}
+#lang-switcher .lang-btn:hover,
+#lang-switcher .lang-btn[aria-current="true"] { opacity: 1; text-decoration: underline; }
+
+/* ---------- 回到顶部 ---------- */
+#to-top {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  z-index: 10000;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: inherit;
+  mix-blend-mode: difference;
+  isolation: isolate;
+  opacity: 0;                    /* 滚动后由 JS 显示 */
+  pointer-events: none;
+  transition: opacity .3s;
+}
+#to-top.show { opacity: 1; pointer-events: auto; }
+
+/* 通用按钮组（hero / projects 复用） */
+.btn-stack {
+  display: flex;
+  flex-direction: column;
+  gap: calc(1.2 * var(--btn-font-size));
+}
+.btn-stack button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--btn-font-size);
+  color: var(--fg);
+  text-align: left;
+  transition: opacity .2s;
+}
+.btn-stack button:hover { text-decoration: underline; }
